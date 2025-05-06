@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import { signupValidator } from './auth.validator';
+import { AppError } from '../utils/app.error';
 
 const register = (req: Request, res: Response) => {
 	const { error, value } = signupValidator(req.body);
 
 	if (error) {
-		throw new Error(error.details[0].message); // Create a new AppError instance with the error message
+		throw new AppError(error.details[0].message, 400); // Create a new AppError instance with the error message
 	}
 
 	console.log(value);
