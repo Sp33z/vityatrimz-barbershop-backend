@@ -16,7 +16,7 @@ const pool = createPool({
 
 // Function to execute a query on the database
 // This function takes a SQL query and parameters as input and returns the results
-const query = async (sql: string, params: any[]) => {
+const query = async (sql: string, params: Array<string | number>) => {
 	const [results] = await pool.query(sql, params);
 	return results;
 };
