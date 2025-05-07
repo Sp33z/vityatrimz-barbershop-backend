@@ -20,4 +20,13 @@ const signupSchema = {
 
 const signupValidator = validator(Joi.object(signupSchema)); // Create a validator function using the signup schema
 
-export { signupValidator };
+// -- Login Validator -- //
+
+const loginSchema = {
+	email: Joi.string().email().required(), // Email must be a valid email format
+	password: Joi.string().min(8).max(30).required(), // Password must be between 8 and 30 characters
+};
+
+const loginValidator = validator(Joi.object(loginSchema)); // Create a validator function using the login schema
+
+export { signupValidator, loginValidator };

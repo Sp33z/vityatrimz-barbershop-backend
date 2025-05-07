@@ -12,6 +12,7 @@ const encryptPassword = (password: string): string => {
 
 // Function to compare a plain password with a hashed password
 const comparePassword = (password: string, hashedPassword: string): boolean => {
+	console.log(password, hashedPassword); // Log the password and hashed password for debugging
 	return compareSync(password, hashedPassword); // Compare the plain password with the hashed password
 };
 
