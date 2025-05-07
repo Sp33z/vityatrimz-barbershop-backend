@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { loginValidator, signupValidator } from './auth.validator';
 import { AppError } from '../utils/app.error';
 import { AUTH_QUERIES } from './auth.queries';
+import { requestIP } from '../infrastructure/network/ip.detector';
 
 import {
 	pool,
@@ -13,6 +14,10 @@ import {
 	comparePassword,
 	encryptPassword,
 } from '../infrastructure/bcrypt/password.handler';
+import {
+	createTokenRow,
+	updateTokens,
+} from '../infrastructure/jwt/token.controller';
 
 // -- Register -- //
 const register = async (req: Request, res: Response) => {
@@ -55,6 +60,8 @@ const register = async (req: Request, res: Response) => {
 		encryptPassword(value.password), // Encrypt the password before storing it
 	]);
 
+	createTokenRow(result.insertId); // Create a token row for the new user
+
 	// If the insertion is successful, send a success response
 	res.status(201).json({ message: 'Registered successfully' });
 };
@@ -85,9 +92,12 @@ const login = async (req: Request, res: Response): Promise<void> => {
 		throw new AppError('Invalid password', 401);
 	}
 
+	const accessToken = await updateTokens(users[0].customer_id, requestIP(req)); // Update the tokens for the user
+
 	// If the email and password are valid, proceed to log in the user
 	res.status(200).json({
 		message: 'Logged in successfully',
+		accessToken: accessToken,
 	});
 };
 

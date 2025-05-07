@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
 
+# Key files
+src/infrastructure/keys/
+
 # Environment variables
 .env

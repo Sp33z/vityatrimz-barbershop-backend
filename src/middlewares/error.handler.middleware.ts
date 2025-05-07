@@ -9,8 +9,7 @@ const errorHandler = (
 ) => {
 	// Get the error parameters from the AppError instance
 	const statusCode = err.statusCode || 500; // Use the error code or default to 500
-	const errorMessage =
-		err.message.split('\n')[0].toString() || 'Internal Server Error'; // Default to a generic error message
+	const errorMessage = err.message.toString() || 'Internal Server Error'; // Default to a generic error message
 
 	// Log out the error details for debugging
 	console.error('Error:', errorMessage); // Log the error message

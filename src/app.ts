@@ -7,7 +7,13 @@ import { errorHandler } from './middlewares/error.handler.middleware';
 import { authRouter } from './authentication/auth.router';
 
 const app = express();
-app.use(cors());
+app.use(
+	cors({
+		origin: '*', // Allow all origins
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+	})
+);
+
 app.use(express.json());
 
 app.use(bodyHandler); // Middleware to handle request body
