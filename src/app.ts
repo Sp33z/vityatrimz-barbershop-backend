@@ -15,7 +15,6 @@ app.use(bodyHandler); // Middleware to handle request body
 // Routes
 app.use('/api/auth', authRouter);
 
-// 🚨 Error handler goes LAST
-app.use(errorHandler);
+app.use(errorHandler); // 🚨 Error handler goes LAST
 
 export { app };

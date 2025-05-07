@@ -1,4 +1,4 @@
-import { createPool } from 'mysql2/promise';
+import { createPool, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import { config } from '../config/config';
 
 // Creating the pool to connect to the database
@@ -14,11 +14,9 @@ const pool = createPool({
 	queueLimit: 0,
 });
 
-// Function to execute a query on the database
-// This function takes a SQL query and parameters as input and returns the results
-const query = async (sql: string, params: Array<string | number>) => {
-	const [results] = await pool.query(sql, params);
-	return results;
-};
+// Adding a listener to handle connection errors
+pool.addListener('error', (err) => {
+	throw new Error(`Database connection error: ${err}`); // Handle database connection errors
+});
 
-export { query };
+export { pool, RowDataPacket, ResultSetHeader };

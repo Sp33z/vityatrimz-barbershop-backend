@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { myIP } from '../network/ipDetector';
+import { myIP } from '../network/ip.detector';
 
 dotenv.config();
 
@@ -13,7 +13,10 @@ const config = {
 		port: Number(process.env.DB_PORT) || 3306,
 		name: process.env.DB_NAME || 'my_database',
 		user: process.env.DB_USER || 'root',
-		password: process.env.DB_PASSWORD || 'password',
+		password: process.env.DB_PASSWORD,
+	},
+	bcrypt: {
+		saltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) || 10,
 	},
 };
 
