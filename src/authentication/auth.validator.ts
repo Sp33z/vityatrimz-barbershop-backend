@@ -29,4 +29,12 @@ const loginSchema = {
 
 const loginValidator = validator(Joi.object(loginSchema)); // Create a validator function using the login schema
 
-export { signupValidator, loginValidator };
+// -- Logout Validator -- //
+
+const logoutSchema = {
+	accessToken: Joi.string().required(), // Access token must be a string and is required
+};
+
+const logoutValidator = validator(Joi.object(logoutSchema)); // Create a validator function using the logout schema
+
+export { signupValidator, loginValidator, logoutValidator };

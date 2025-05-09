@@ -73,4 +73,20 @@ const updateTokens = async (userID: number, ip: string): Promise<string> => {
 	return accessToken;
 };
 
-export { createTokenRow, updateAccessToken, updateRefreshToken, updateTokens };
+//
+const removeUserTokens = async (accessToken: string): Promise<void> => {
+	await pool.query<ResultSetHeader>(
+		TOKEN_QUERIES.CLEAR_TOKENS_AND_IP_BY_ACCESS_TOKEN,
+		[accessToken]
+	);
+
+	return;
+};
+
+export {
+	createTokenRow,
+	updateAccessToken,
+	updateRefreshToken,
+	updateTokens,
+	removeUserTokens,
+};

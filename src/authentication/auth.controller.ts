@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import { loginValidator, signupValidator } from './auth.validator';
+import {
+	loginValidator,
+	logoutValidator,
+	signupValidator,
+} from './auth.validator';
 import { AppError } from '../utils/app.error';
 import { AUTH_QUERIES } from './auth.queries';
 import { requestIP } from '../infrastructure/network/ip.detector';
@@ -16,6 +20,7 @@ import {
 } from '../infrastructure/bcrypt/password.handler';
 import {
 	createTokenRow,
+	removeUserTokens,
 	updateTokens,
 } from '../infrastructure/jwt/token.controller';
 
@@ -92,7 +97,8 @@ const login = async (req: Request, res: Response): Promise<void> => {
 		throw new AppError('Invalid password', 401);
 	}
 
-	const accessToken = await updateTokens(users[0].customer_id, requestIP(req)); // Update the tokens for the user
+	// Update the tokens for the user
+	const accessToken = await updateTokens(users[0].customer_id, requestIP(req));
 
 	// If the email and password are valid, proceed to log in the user
 	res.status(200).json({
@@ -101,8 +107,23 @@ const login = async (req: Request, res: Response): Promise<void> => {
 	});
 };
 
+// -- Logout -- //
 const logout = async (req: Request, res: Response): Promise<void> => {
-	res.json({ message: 'Logged out successfully' });
+	// Validate the request body using the loginValidator
+	const { error, value } = logoutValidator(req.body);
+
+	// Create a new AppError instance with the error message if validation fails
+	if (error) {
+		throw new AppError(error.details[0].message, 406);
+	}
+
+	// Remove the user's tokens from the database
+	removeUserTokens(value.accessToken);
+
+	// If the tokens are removed successfully, send a success response
+	res.status(200).json({
+		message: 'Logged out successfully',
+	});
 };
 
 const me = async (req: Request, res: Response): Promise<void> => {
