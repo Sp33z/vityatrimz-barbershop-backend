@@ -65,7 +65,8 @@ const register = async (req: Request, res: Response) => {
 		encryptPassword(value.password), // Encrypt the password before storing it
 	]);
 
-	createTokenRow(result.insertId); // Create a token row for the new user
+	// Create a token row for the new user
+	createTokenRow(result.insertId);
 
 	// If the insertion is successful, send a success response
 	res.status(201).json({ message: 'Registered successfully' });

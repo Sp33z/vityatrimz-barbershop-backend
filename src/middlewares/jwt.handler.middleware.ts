@@ -14,7 +14,10 @@ const jwtHandler = async (req: Request, res: Response, next: NextFunction) => {
 	}
 
 	// Get the access token from the authorization header
-	const accessToken: string = req.headers.authorization;
+	const accessToken: string = req.headers.authorization.replaceAll(
+		'Bearer ',
+		''
+	);
 	const decodedAccessToken = decodeAccessToken(accessToken);
 
 	// Check if the refresh token is valid
