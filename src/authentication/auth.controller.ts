@@ -126,8 +126,32 @@ const logout = async (req: Request, res: Response): Promise<void> => {
 	});
 };
 
+// -- Me -- //
 const me = async (req: Request, res: Response): Promise<void> => {
-	res.json({ message: 'User data' });
+	// Get the customer ID from the request body
+	const customerId = req.body.customer_id;
+
+	// Get the customer data from the database using the customer ID
+	const [personalData] = await pool.query<RowDataPacket[]>(
+		AUTH_QUERIES.SELECT_CUSTOMER_DATA_BY_ID,
+		[customerId]
+	);
+
+	// Get the authentication data from the database using the customer ID
+	const [authenticationData] = await pool.query<RowDataPacket[]>(
+		AUTH_QUERIES.SELECT_AUTHENTICATION_DATA_BY_ID,
+		[customerId]
+	);
+
+	// Send back the customer data as a response
+	res.status(200).json({
+		customer_id: customerId,
+		first_name: personalData[0].first_name,
+		last_name: personalData[0].last_name,
+		date_of_birth: personalData[0].date_of_birth,
+		phone: personalData[0].phone,
+		email: authenticationData[0].email,
+	});
 };
 
 export { login, register, logout, me };

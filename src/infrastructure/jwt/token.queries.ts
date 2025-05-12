@@ -1,6 +1,7 @@
 const TOKEN_QUERIES = {
 	// SELECT
 	SELECT_TOKENS_BY_ID: `SELECT * FROM tokens WHERE id = ?`,
+	SELECT_REFRESH_TOKEN_BY_ACCESS_TOKEN: `SELECT refresh FROM tokens WHERE access = ?`,
 
 	// INSERT
 	INSERT_ROW_FOR_USER: `INSERT INTO tokens (customer_id, access, refresh, ip) VALUES (?, "", "", "")`,

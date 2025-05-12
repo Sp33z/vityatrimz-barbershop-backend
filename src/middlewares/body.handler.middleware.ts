@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../utils/app.error';
 
 const bodyHandler = (req: Request, res: Response, next: NextFunction) => {
+	// Check if the request body is empty
 	if (!req.body) {
-		throw new AppError('Request body is missing', 403); // Throw an error if the body is not present
+		// If the body is empty, set it to an empty object
+		req.body = {};
 	}
 
 	next(); // Proceed to the next middleware or route handler
